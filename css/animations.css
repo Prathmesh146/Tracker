@@ -1,0 +1,212 @@
+/* ============================================================
+   STUDYFLOW  |  css/animations.css
+   All Keyframe Animations & Micro-interactions
+   ============================================================ */
+
+/* ══════════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════════ */
+
+/* Card entrance */
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modal slide up */
+@keyframes sheetUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Toast slide in */
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Toast fade out */
+@keyframes toastOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        max-height: 60px;
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.95);
+        max-height: 0;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* Gold star badge slide in */
+@keyframes slideBadgeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Star spin on gold badge */
+@keyframes starSpin {
+    0%   { transform: scale(0) rotate(-180deg); }
+    60%  { transform: scale(1.3) rotate(20deg); }
+    80%  { transform: scale(0.9) rotate(-10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Logo pulse glow */
+@keyframes logoPulse {
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(124,111,255,0.5)); }
+    50%       { filter: drop-shadow(0 0 14px rgba(124,111,255,0.9)); }
+}
+
+/* Progress bar shimmer */
+@keyframes shimmer {
+    0%   { opacity: 0; transform: translateX(-100%); }
+    50%  { opacity: 0.6; }
+    100% { opacity: 0; transform: translateX(200%); }
+}
+
+/* Streak bounce on increment */
+@keyframes streakBounce {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.35); }
+    60%  { transform: scale(0.9); }
+    80%  { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Checkbox check pop */
+@keyframes checkPop {
+    0%   { transform: scale(0.6); }
+    60%  { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Fade in */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Fade in up */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulse ring (for streak fire) */
+@keyframes pulseRing {
+    0%   { box-shadow: 0 0 0 0 rgba(255,165,2,0.4); }
+    70%  { box-shadow: 0 0 0 10px rgba(255,165,2,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,165,2,0); }
+}
+
+/* Staggered card entrance */
+.task-card:nth-child(1)  { animation-delay: 0.04s; }
+.task-card:nth-child(2)  { animation-delay: 0.08s; }
+.task-card:nth-child(3)  { animation-delay: 0.12s; }
+.task-card:nth-child(4)  { animation-delay: 0.16s; }
+.task-card:nth-child(5)  { animation-delay: 0.20s; }
+.task-card:nth-child(6)  { animation-delay: 0.24s; }
+
+.subject-card:nth-child(1) { animation-delay: 0.05s; }
+.subject-card:nth-child(2) { animation-delay: 0.10s; }
+.subject-card:nth-child(3) { animation-delay: 0.15s; }
+.subject-card:nth-child(4) { animation-delay: 0.20s; }
+.subject-card:nth-child(5) { animation-delay: 0.25s; }
+.subject-card:nth-child(6) { animation-delay: 0.30s; }
+.subject-card:nth-child(7) { animation-delay: 0.35s; }
+
+.chapter-item:nth-child(odd)  { animation-delay: 0.04s; }
+.chapter-item:nth-child(even) { animation-delay: 0.08s; }
+
+/* ══════════════════════════════════════════
+   INTERACTION CLASSES (toggled by JS)
+══════════════════════════════════════════ */
+
+/* Streak pulse */
+.streak-badge.just-incremented {
+    animation: pulseRing 0.6s var(--ease-out);
+}
+
+.streak-count.bouncing {
+    display: inline-block;
+    animation: streakBounce 0.5s var(--ease-spring);
+}
+
+/* Checkbox animation */
+.task-checkbox.just-checked,
+.sub-checkbox.just-checked {
+    animation: checkPop 0.3s var(--ease-spring);
+}
+
+/* Gold badge show */
+.gold-badge:not(.hidden) {
+    animation: slideBadgeIn 0.4s var(--ease-spring);
+}
+
+/* View transitions */
+.view.slide-in-right  { animation: slideInRight 0.28s var(--ease-out) both; }
+.view.slide-in-left   { animation: slideInLeft 0.28s var(--ease-out) both; }
+.view.slide-out-right { animation: slideOutRight 0.22s var(--ease-in) both; }
+.view.slide-out-left  { animation: slideOutLeft 0.22s var(--ease-in) both; }
+
+@keyframes slideInRight  { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideInLeft   { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideOutRight { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(30px); } }
+@keyframes slideOutLeft  { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-30px); } }
+
+/* Subject overview item stagger */
+.subject-overview-item { animation: fadeInUp 0.3s var(--ease-out) both; }
+.subject-overview-item:nth-child(1) { animation-delay: 0.03s; }
+.subject-overview-item:nth-child(2) { animation-delay: 0.06s; }
+.subject-overview-item:nth-child(3) { animation-delay: 0.09s; }
+.subject-overview-item:nth-child(4) { animation-delay: 0.12s; }
+.subject-overview-item:nth-child(5) { animation-delay: 0.15s; }
+.subject-overview-item:nth-child(6) { animation-delay: 0.18s; }
+.subject-overview-item:nth-child(7) { animation-delay: 0.21s; }
+
+/* Task done strikethrough animation */
+.task-card.completing .task-title {
+    animation: strikeThrough 0.4s var(--ease-out) forwards;
+}
+
+@keyframes strikeThrough {
+    from { text-decoration: none; opacity: 1; }
+    to   { text-decoration: line-through; opacity: 0.6; color: var(--text-muted); }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

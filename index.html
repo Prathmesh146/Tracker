@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>StudyFlow — Grade 9 Academic Tracker</title>
+    <meta name="description" content="Your personal NCERT Grade 9 homework and task tracker. Stay on top of every subject, chapter, and deadline — offline-first." />
+    <meta name="theme-color" content="#0D0F14" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+<div id="app">
+
+    <!-- ═══ TOP HEADER ═══ -->
+    <header id="app-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="app-logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">StudyFlow</span>
+                </div>
+                <span class="header-subtitle">Grade 9 · NCERT 2026–27</span>
+            </div>
+            <div class="header-right">
+                <div id="streak-badge" class="streak-badge" title="Daily Completion Streak">
+                    <span class="streak-fire">🔥</span>
+                    <span id="streak-count" class="streak-count">0</span>
+                    <span class="streak-label">day streak</span>
+                </div>
+                <button id="notif-btn" class="icon-btn" title="Enable Reminders" aria-label="Enable Notifications">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══ GOLD STAR BANNER ═══ -->
+    <div id="gold-badge" class="gold-badge hidden" role="status" aria-live="polite">
+        <span class="gold-star-anim">⭐</span>
+        <div class="gold-text-wrap">
+            <span class="gold-title">Perfect Day!</span>
+            <span class="gold-sub">All today's tasks completed 🎉</span>
+        </div>
+    </div>
+
+    <!-- ═══ MAIN VIEWS ═══ -->
+    <main id="app-main" role="main">
+
+        <!-- ─── DASHBOARD ─── -->
+        <div id="view-dashboard" class="view active" role="tabpanel" aria-label="Dashboard">
+            <div class="view-scroll">
+
+                <div class="dashboard-greeting">
+                    <h1 id="greeting-text" class="greeting-title">Good Evening! 👋</h1>
+                    <p class="greeting-sub">Let's crush today's goals.</p>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="stats-row" id="stats-row">
+                    <div class="stat-card" id="stat-card-today">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-number" id="stat-today">0</div>
+                        <div class="stat-label">Due Today</div>
+                    </div>
+                    <div class="stat-card stat-accent" id="stat-card-pending">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-number" id="stat-pending">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card stat-success" id="stat-card-done">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-number" id="stat-done">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+
+                <!-- Due Today -->
+                <section class="dash-section" id="section-today">
+                    <div class="section-header">
+                        <h2 class="section-title">📅 Due Today</h2>
+                        <span id="today-badge" class="count-badge">0</span>
+                    </div>
+                    <div id="tasks-today" class="task-list">
+                        <div class="empty-state" id="today-empty">
+                            <div class="empty-icon-wrap">✨</div>
+                            <p class="empty-title">Nothing due today!</p>
+                            <p class="empty-sub">Enjoy your free time or get ahead.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Pending Homework -->
+                <section class="dash-section" id="section-pending">
+                    <div class="section-header">
+                        <h2 class="section-title">📚 Pending Homework</h2>
+                        <span id="pending-badge" class="count-badge badge-urgent">0</span>
+                    </div>
+                    <div id="tasks-pending" class="task-list">
+                        <div class="empty-state" id="pending-empty">
+                            <div class="empty-icon-wrap">🎉</div>
+                            <p class="empty-title">All caught up!</p>
+                            <p class="empty-sub">You're on fire. Keep going!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Subject Progress Overview -->
+                <section class="dash-section">
+                    <div class="section-header">
+                        <h2 class="section-title">📊 Subject Progress</h2>
+                    </div>
+                    <div id="subject-overview" class="subject-overview-list"></div>
+                </section>
+
+                <div class="bottom-spacer"></div>
+            </div>
+        </div>
+
+        <!-- ─── SUBJECTS ─── -->
+        <div id="view-subjects" class="view" role="tabpanel" aria-label="Subjects">
+            <div class="view-scroll">
+                <div class="view-head">
+                    <h1 class="view-title">Your Subjects</h1>
+                    <p class="view-subtitle">Grade 9 · NCERT — Tap a subject to explore chapters</p>
+                </div>
+                <div id="subject-grid" class="subject-grid"></div>
+                <div class="bottom-spacer"></div>
+            </div>
+        </div>
+
+        <!-- ─── SEARCH ─── -->
+        <div id="view-search" class="view" role="tabpanel" aria-label="Search">
+            <div class="view-scroll">
+                <div class="search-header">
+                    <div class="search-input-wrap">
+                        <svg class="search-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="search" id="search-input" class="search-input" placeholder="Search tasks, chapters, subjects…" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Search" />
+                        <button id="search-clear" class="search-clear-btn hidden" aria-label="Clear search">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                    <div class="filter-chips" id="filter-chips" role="group" aria-label="Search filters">
+                        <button class="chip" data-filter="pending" id="chip-pending">⏳ Pending</button>
+                        <button class="chip" data-filter="today"  id="chip-today">📅 Due Today</button>
+                        <button class="chip" data-filter="urgent" id="chip-urgent">🔴 Urgent</button>
+                        <button class="chip" data-filter="done"   id="chip-done">✅ Done</button>
+                    </div>
+                </div>
+                <div id="search-results" class="task-list">
+                    <div class="search-placeholder" id="search-placeholder">
+                        <div class="empty-icon-wrap" style="font-size:2.5rem">🔍</div>
+                        <p class="empty-title">Start typing to search</p>
+                        <p class="empty-sub">Searches across tasks, chapters & subjects</p>
+                    </div>
+                </div>
+                <div class="bottom-spacer"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ═══ BOTTOM NAV ═══ -->
+    <nav id="bottom-nav" role="navigation" aria-label="Main navigation">
+        <button class="nav-btn active" data-view="dashboard" id="nav-dashboard" aria-label="Dashboard" aria-selected="true">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                <rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+            <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" data-view="subjects" id="nav-subjects" aria-label="Subjects" aria-selected="false">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            <span>Subjects</span>
+        </button>
+        <button class="nav-btn nav-fab-btn" id="nav-quickadd" aria-label="Add new task">
+            <div class="fab-circle" id="fab-circle">
+                <svg class="fab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+            </div>
+            <span>Add</span>
+        </button>
+        <button class="nav-btn" data-view="search" id="nav-search" aria-label="Search" aria-selected="false">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <span>Search</span>
+        </button>
+    </nav>
+
+</div><!-- /#app -->
+
+<!-- ═══ SUBJECT PANEL (slide-over) ═══ -->
+<div id="subject-panel" class="subject-panel" role="dialog" aria-modal="true" aria-label="Subject detail">
+    <div class="panel-topbar">
+        <button id="panel-back" class="panel-back-btn" aria-label="Go back">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Subjects
+        </button>
+        <button id="panel-add-task-btn" class="btn btn-sm btn-primary" aria-label="Add task for this subject">+ Task</button>
+    </div>
+    <div class="panel-subject-header" id="panel-subject-header">
+        <div class="panel-subject-icon-wrap" id="panel-subject-icon-wrap">
+            <span id="panel-subject-icon" class="panel-subject-icon-text"></span>
+        </div>
+        <div class="panel-subject-info">
+            <h2 id="panel-subject-name" class="panel-subject-name"></h2>
+            <p id="panel-subject-book" class="panel-subject-book"></p>
+        </div>
+    </div>
+    <div class="panel-progress-section">
+        <div class="progress-label-row">
+            <span class="progress-label-text">Overall Progress</span>
+            <span id="panel-progress-pct" class="progress-pct-text">0%</span>
+        </div>
+        <div class="progress-bar-track">
+            <div id="panel-progress-fill" class="progress-bar-fill" style="width:0%"></div>
+        </div>
+    </div>
+    <div class="panel-body-scroll" id="panel-body-scroll">
+        <div id="chapter-list" class="chapter-list"></div>
+        <button id="add-custom-chapter-btn" class="add-chapter-btn" aria-label="Add custom chapter">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Custom Chapter
+        </button>
+    </div>
+</div>
+<div id="panel-backdrop" class="panel-backdrop hidden"></div>
+
+<!-- ═══ QUICK-ADD MODAL ═══ -->
+<div id="quickadd-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Add new task">
+    <div id="quickadd-sheet" class="modal-sheet">
+        <div class="modal-handle" aria-hidden="true"></div>
+        <div class="modal-header">
+            <h2 class="modal-title">✏️ Add New Task</h2>
+            <button id="quickadd-close" class="modal-close-btn" aria-label="Close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label" for="qa-title">Task Title <span class="required">*</span></label>
+                <input type="text" id="qa-title" class="form-input" placeholder="e.g., Complete Exercise 3.2, Revise Chapter 5…" maxlength="120" />
+            </div>
+            <div class="form-row-2">
+                <div class="form-group">
+                    <label class="form-label" for="qa-subject">Subject <span class="required">*</span></label>
+                    <select id="qa-subject" class="form-select">
+                        <option value="">Select Subject</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="qa-chapter">Chapter</label>
+                    <select id="qa-chapter" class="form-select">
+                        <option value="">Select Chapter</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group">
+                    <label class="form-label" for="qa-date">Due Date</label>
+                    <input type="date" id="qa-date" class="form-input" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Priority</label>
+                    <div class="priority-toggle" role="group" aria-label="Priority">
+                        <button class="prio-btn active" data-priority="normal" id="prio-normal">Normal</button>
+                        <button class="prio-btn prio-urgent" data-priority="urgent" id="prio-urgent">🔴 Urgent</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="qa-notes">Notes</label>
+                <textarea id="qa-notes" class="form-input form-textarea" placeholder="Page numbers, instructions, board notes…" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">📷 Attach Photo <span class="form-hint">(blackboard / book — auto-compressed)</span></label>
+                <div class="image-upload-wrap" id="image-upload-wrap">
+                    <input type="file" id="qa-image" accept="image/*" class="hidden" aria-label="Attach image" />
+                    <div id="image-preview-area" class="image-preview-empty">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <span>Tap to attach a photo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="qa-cancel" class="btn btn-ghost">Cancel</button>
+            <button id="qa-submit" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Save Task
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ CUSTOM CHAPTER MODAL ═══ -->
+<div id="chapter-modal-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Add custom chapter">
+    <div class="modal-sheet modal-sheet-sm">
+        <div class="modal-handle" aria-hidden="true"></div>
+        <div class="modal-header">
+            <h2 class="modal-title">➕ Add Custom Chapter</h2>
+            <button id="chapter-modal-close" class="modal-close-btn" aria-label="Close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label" for="custom-chapter-name">Chapter / Topic Name <span class="required">*</span></label>
+                <input type="text" id="custom-chapter-name" class="form-input" placeholder="e.g., Extra Practice: Polynomials, Grammar Notes…" maxlength="100" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="chapter-cancel" class="btn btn-ghost">Cancel</button>
+            <button id="chapter-submit" class="btn btn-primary">Add Chapter</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ TASK DETAIL MODAL ═══ -->
+<div id="task-detail-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Task details">
+    <div class="modal-sheet modal-sheet-sm">
+        <div class="modal-handle" aria-hidden="true"></div>
+        <div class="modal-header">
+            <h2 class="modal-title" id="detail-title">Task Details</h2>
+            <button id="task-detail-close" class="modal-close-btn" aria-label="Close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="modal-body" id="task-detail-body"></div>
+        <div class="modal-footer">
+            <button id="task-delete-btn" class="btn btn-danger">🗑 Delete Task</button>
+            <button id="task-detail-close2" class="btn btn-ghost">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ TOAST CONTAINER ═══ -->
+<div id="toast-container" class="toast-container" aria-live="polite" role="status"></div>
+
+<!-- ═══ CONFETTI CANVAS ═══ -->
+<canvas id="confetti-canvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script src="js/db.js"></script>
+<script src="js/data.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/quickadd.js"></script>
+<script src="js/search.js"></script>
+<script src="js/subjects.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
